@@ -2,7 +2,7 @@
 
 # 🎓 Student Academic Performance Predictor
 
-This project analyzes a student academic performance dataset and employs multiple Machine Learning regression algorithms to predict a student's final marks based on their demographic, academic, and social factors.
+This project analyzes a student academic performance dataset and employs multiple Machine Learning regression algorithms (including 25 distinct models) to predict a student's final marks based on their demographic, academic, and social factors.
 
 ---
 
@@ -10,9 +10,9 @@ This project analyzes a student academic performance dataset and employs multipl
 
 The core objective is to:
 
-1. **Visualize** the relationships between different factors (columns) in the dataset.
-2. **Clean** and preprocess the data for model readiness.
-3. **Train and Compare** eight different regression models to determine the most accurate predictor of student final marks.
+1.  **Visualize** the relationships between different factors (columns) in the dataset.
+2.  **Clean** and preprocess the data for model readiness.
+3.  **Train and Compare** **25** different regression models to determine the most accurate predictor of student final marks.
 
 The final output is a visualization of the $\text{R}^2$ scores and Mean Squared Errors (MSE) for all models, allowing for an immediate assessment of the best-performing algorithm.
 
@@ -53,50 +53,58 @@ The data is split to ensure the model's performance is evaluated on unseen data:
 
 ### 3. Regression Models
 
-The `training_regression()` function compares the performance of the following eight models:
+The `training_regression()` function compares the performance of **25 diverse regression models**, including:
 
-| Category | Model Name | Abbreviation |
-| :--- | :--- | :--- |
-| **Ensemble** | Random Forest Regressor | `rfr` |
-| | AdaBoost Regressor | `abr` |
-| | Gradient Boosting Regressor | `gbr` |
-| | Extra Trees Regressor | `etr` |
-| **Boosted** | XGBoost Regressor | `xgbr` |
-| | LightGBM Regressor | `lgbr` |
-| **Linear** | Linear Regression | `lnr` |
-| **Kernel-based**| Support Vector Regressor | `svr` |
+| Category | Models Included |
+| :--- | :--- |
+| **Linear Models** | Linear Regression, Ridge, Lasso, Elastic Net, LARS, Lasso LARS, Bayesian Ridge |
+| **Robust/Non-parametric** | Huber Regressor, Theil Sen, RANSAC, Passive Aggressive, Quantile Regressor |
+| **Tree/Ensemble** | Random Forest, Decision Tree, Extra Trees, AdaBoost, Gradient Boosting, Hist Gradient Boosting |
+| **Boosting** | XGBoost, LightGBM |
+| **Kernel/Advanced** | Support Vector Machine (SVR), Kernel Ridge, K-Neighbors, MLP Neural Net, Gaussian Process |
 
 ---
 
 ## 📊 Model Evaluation and Results
 
-The `training_regression()` function performs the following steps:
+The `training_regression()` function calculates the $\text{R}^2$ Score and Mean Squared Error (MSE) for each of the 25 models.
 
-1. **Fit** each model to the training data ($\text{x\_train}$, $\text{y\_train}$).
-2. **Predict** on the test data ($\text{x\_test}$).
-3. Calculate the two main performance metrics:
-    * **$\text{R}^2$ Score:** A measure of how well the regression predictions approximate the real data points. Higher is better (closer to 100%).
-    * **Mean Squared Error (MSE):** The average squared difference between the estimated values and the actual value. Lower is better (closer to 0).
-4. Generate two bar plots comparing the $\text{R}^2$ scores and MSEs across all eight models. The best model will have the highest $\text{R}^2$ and the lowest MSE.
-The results are sorted by $\text{R}^2$ score, showing the top-performing models first.
-
-### Performance Metrics Summary
+### Performance Metrics Summary (Sorted by $\text{R}^2$ Score)
 
 | Model Name | $\text{R}^2$ Score ($\%$) | MSE | Rank (by $\text{R}^2$) |
 | :--- | :--- | :--- | :--- |
-| **Linear Regression** | **79.49 %** | 21.3254 | **1** |
-| Gradient Boosting | 78.04 % | 22.9101 | 2 |
-| LightGBM | 75.34 % | 25.9967 | 3 |
-| Random Forest | 73.31 % | 27.2053 | 4 |
-| XGBoost | 72.55 % | 29.9313 | 5 |
-| Extra Trees | 71.86 % | 29.5187 | 6 |
-| Ada Boost | 67.62 % | 28.5175 | 7 |
-| Support Vector Machine | 60.24 % | 28.4099 | 8 |
+| **Linear Regression** | **79.49 %** | **21.3254** | **1** |
+| **LARS** | **79.49 %** | **21.3254** | **1** |
+| Ridge | 79.48 % | 21.3260 | 3 |
+| Bayesian Ridge | 79.46 % | 21.3314 | 4 |
+| Huber Regressor | 79.29 % | 21.3849 | 5 |
+| Gradient Boosting | 78.04 % | 22.9061 | 6 |
+| Theil Sen | 77.24 % | 21.7104 | 7 |
+| RANSAC | 76.19 % | 22.9190 | 8 |
+| LightGBM | 75.34 % | 25.9967 | 9 |
+| Hist Gradient Boost | 75.34 % | 25.9985 | 10 |
+| Elastic Net | 75.14 % | 23.7873 | 11 |
+| Lasso LARS | 73.39 % | 25.2932 | 12 |
+| Lasso | 73.39 % | 25.2932 | 13 |
+| Random Forest | 73.11 % | 27.5864 | 14 |
+| XGBoost | 72.55 % | 29.9313 | 15 |
+| Extra Trees | 72.01 % | 29.2771 | 16 |
+| K-Neighbors | 70.0 % | 30.3779 | 17 |
+| MLP Neural Net | 69.1 % | 24.7428 | 18 |
+| Ada Boost | 68.33 % | 27.5724 | 19 |
+| Support Vector Machine | 60.24 % | 28.4099 | 20 |
+| Decision Tree | 59.69 % | 52.3440 | 21 |
+| Kernel Ridge | 22.92 % | 36.0590 | 22 |
+| Quantile Regressor | -21.61 % | 47.5152 | 23 |
+| Passive Aggressive | -1.95 % | 52.8721 | 24 |
+| Gaussian Process | -71.78 % | 755.1343 | 25 |
 
 ### Key Findings
 
-* The **Linear Regression** model demonstrated the best performance, explaining **79.49%** of the variance in the student's final marks, and achieving the lowest Mean Squared Error (MSE) of **21.33**.
-* The **Gradient Boosting** and **LightGBM** ensemble methods also performed strongly, indicating that the relationship between the features and the target variable is generally well-suited for linear or highly regularized tree-based models.
+* The **Linear Regression** and **LARS** (Least-Angle Regression) models demonstrated the **best performance**, both explaining **79.49%** of the variance in the student's final marks and achieving the lowest Mean Squared Error (MSE) of **21.33**. This suggests that the relationship between the input features and final marks is predominantly **linear**.
+* Highly regularized linear models like **Ridge** and **Bayesian Ridge** also performed excellently, confirming the linear relationship and suggesting that **regularization** (to prevent overfitting) is beneficial.
+* Ensemble models like **Gradient Boosting** were strong runners-up (78.04% $\text{R}^2$), but did not surpass the best linear models in this dataset.
+* Several models, notably **Gaussian Process** and **Quantile Regressor**, performed poorly, indicated by their large MSE and negative $\text{R}^2$ scores, which means their predictions were significantly worse than simply predicting the mean of the target variable.
 
 ---
 
@@ -146,6 +154,7 @@ This script requires the following standard Python libraries. It is highly recom
 
 ```bash
 pip install pandas numpy tensorflow scikit-learn matplotlib
+```
 
 ## 📊 Data Features and Preprocessing
 
