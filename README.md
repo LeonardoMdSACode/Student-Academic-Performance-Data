@@ -210,7 +210,7 @@ The model was evaluated on the **20% held-out test set**.
 | **Loss (MSE)** | $$\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$ | $24.73$ | The primary loss minimized during training. |
 
 Test Set Mean Squared Error (MSE): 24.67
-Test Set R^2 Score: 80.30% (highest value so far, higher than linear regression!)
+Test Set R^2 Score: 80.30%
 
 ### Sample Predictions
 
@@ -230,3 +230,112 @@ A new student with the following excellent metrics was submitted for prediction:
 
 * **Inputs:** \[85% Attendance, 30/40 Test 1, 32/40 Test 2, 8/10 Assignment, 3 Study Hours]
 * **Predicted Final Exam Score:** **$64.91$**
+
+---
+
+## About the AcademicPerformance-PyTorch.ipyb
+
+# 🎓 Student Performance Prediction using Deep Learning (PyTorch)
+
+This project implements a **Deep Neural Network (DNN)** using the **PyTorch** framework to predict student final exam marks based on various academic and study-related features.
+
+---
+
+## 🎯 Project Goals
+
+1.  **Data Preparation:** Load, clean, and standardize the synthetic student performance dataset using standard Python libraries.
+2.  **Model Development:** Construct a **Feed-Forward Neural Network** using PyTorch's `torch.nn.Module` class for regression.
+3.  **Training:** Implement a manual training loop using the **Adam optimizer** and **Mean Squared Error (MSE)** loss, tracking both training and validation performance across epochs.
+4.  **Evaluation:** Assess the model's accuracy using the Mean Absolute Error (MAE) and $\text{R}^2$ score on a dedicated test set.
+5.  **Prediction Demonstration:** Apply the trained model to predict the score for a new, hypothetical student.
+
+---
+
+## 💻 Dependencies and Setup
+
+This script requires the following Python libraries: pandas, numpy, torch, scikit-learn, and matplotlib.
+
+```bash
+pip install pandas numpy torch scikit-learn matplotlib
+```
+
+## 📊 Data Features and Preprocessing
+
+The model uses **5 input features** to predict the **Final Exam Marks (out of 100)**:
+
+| Feature ($\mathbf{X}$) | Target ($\mathbf{y}$) |
+| :--- | :--- |
+| Attendance (%) | Final Exam Marks (out of 100) |
+| Internal Test 1 (out of 40) | |
+| Internal Test 2 (out of 40) | |
+| Assignment Score (out of 10) | |
+| Daily Study Hours | |
+
+### Preprocessing Steps
+
+* **Train-Test Split:** Data is divided into **80% for training** and **20% for testing** to ensure the model's performance is measured on unseen data.
+* **Standardization:** Features are scaled using `StandardScaler` from scikit-learn.
+* **Tensor Conversion:** Scaled data is converted into **PyTorch Tensors** and wrapped into `TensorDataset` and `DataLoader` objects for efficient batch processing during training.
+
+---
+
+## 🧠 Model Architecture & Training
+
+The model is defined as a custom class inheriting from **`torch.nn.Module`**, replicating the original sequential structure:
+
+### Architecture
+
+| Layer Type | Parameters | Activation | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Linear (Hidden 1)** | Input $\to 64$ units | **ReLU** | Primary feature learning layer. |
+| **Linear (Hidden 2)** | $64 \to 32$ units | **ReLU** | Captures more abstract patterns. |
+| **Dropout** | Rate 0.2 | (N/A) | **Regularization** to prevent overfitting. |
+| **Linear (Output)** | $32 \to 1$ unit | **Linear** (None) | Outputs the continuous predicted score. |
+
+### Training Implementation
+
+* **Loss Function (Criterion):** **`nn.MSELoss()`** (Mean Squared Error).
+    * $$\text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+* **Optimizer:** **`optim.Adam()`**
+* **Training Epochs:** 100
+* **Batch Size:** 16
+* **Validation:** A 20% validation split is used within the training set to monitor performance against unseen data at the end of each epoch.
+
+---
+
+## 📈 Evaluation and Results
+
+The model was evaluated on the **20% held-out test set** after 100 epochs.
+
+### Performance Metrics
+
+| Metric | Formula | Value | Interpretation |
+| :--- | :--- | :--- | :--- |
+| **$\text{R}^2$ Score** | (N/A) | **$82.07\%$** | The model explains **$82.07\%$** of the variance in the final marks, showing a very strong fit, **outperforming the baseline linear models**. |
+| **MAE** | $$\frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|$$ | **$3.73$ Marks** | On average, the prediction is off by only **$\pm 3.73$ marks**. |
+| **Loss (MSE)** | $$\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$ | $22.45$ | The primary loss minimized during training. |
+
+### Sample Predictions
+
+| Actual Marks ($\mathbf{y}$) | Predicted Marks ($\mathbf{\hat{y}}$) | Difference |
+| :---: | :---: | :---: |
+| 64.0 | 64.39 | -0.39 |
+| 52.0 | 54.40 | -2.40 |
+| 61.0 | 63.99 | -2.99 |
+| 54.0 | 46.79 | 7.21 |
+| 37.0 | 38.88 | -1.88 |
+
+---
+
+## ✅ Live Prediction Demonstration
+
+A new student with the following excellent metrics was submitted for prediction:
+
+* **Inputs:** \[85% Attendance, 30/40 Test 1, 32/40 Test 2, 8/10 Assignment, 3 Study Hours]
+* **Predicted Final Exam Score:** **$64.10$**
+
+---
+
+## 🔑 Key Findings
+
+The Deep Neural Network achieved an **$\text{R}^2$ score of $82.07\%$** and a **Mean Absolute Error (MAE) of $3.73$ marks** on the test set. This performance surpasses the $79.49\%$ $\text{R}^2$ achieved by the best traditional machine learning models (Linear Regression/LARS) previously tested, indicating that the deeper architecture was successful in capturing slightly more complex, non-linear patterns within the data.
